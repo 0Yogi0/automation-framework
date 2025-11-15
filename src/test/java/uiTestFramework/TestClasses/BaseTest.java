@@ -7,6 +7,7 @@ import org.testng.ITestContext;
 import org.testng.annotations.*;
 import uiTestFramework.DriverManager.DriverManager;
 
+import uiTestFramework.Utilities.LoggerUtil;
 import uiTestFramework.extentReportManagers.ExtentManager;
 import uiTestFramework.extentReportManagers.ExtentTestManager;
 import uiTestFramework.listeners.TestListener;
@@ -14,11 +15,11 @@ import uiTestFramework.listeners.TestListener;
 import java.lang.reflect.Method;
 
 @Listeners({TestListener.class})
-public class BaseTest{
+public abstract class BaseTest{
 
+    private static final Logger log = LoggerUtil.getLogger(BaseTest.class);
 
     protected WebDriver driver;
-    protected Logger log;
 
     @BeforeSuite
     public void setupSuite(ITestContext context) {
@@ -28,17 +29,16 @@ public class BaseTest{
 
     @BeforeMethod
     public void setup(Method method) {
-        log = LogManager.getLogger(method.getDeclaringClass());
-
         ExtentTestManager.startTest(method.getName());
-
         driver = DriverManager.getDriver();   // Initialize WebDriver
-        log.info("Driver initialized for test: " + method.getName());
+        log.info("Driver initialized successfully for test: {}", method.getName());
     }
 
     @AfterMethod
     public void tearDown() {
+        log.info("Closing WebDriver");
         DriverManager.quitDriver();
+        log.info("WebDriver Closed");
         ExtentTestManager.endTest();
     }
 

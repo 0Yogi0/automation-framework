@@ -8,6 +8,7 @@ import org.testng.annotations.*;
 import uiTestFramework.DriverManager.DriverManager;
 
 import uiTestFramework.Utilities.LoggerUtil;
+import uiTestFramework.config.Config;
 import uiTestFramework.extentReportManagers.ExtentManager;
 import uiTestFramework.extentReportManagers.ExtentTestManager;
 import uiTestFramework.listeners.TestListener;
@@ -30,8 +31,10 @@ public abstract class BaseTest{
     @BeforeMethod
     public void setup(Method method) {
         ExtentTestManager.startTest(method.getName());
-        driver = DriverManager.getDriver();   // Initialize WebDriver
+        DriverManager.setDriver();// Initialize WebDriver
+        driver = DriverManager.getDriver();
         log.info("Driver initialized successfully for test: {}", method.getName());
+        driver.get(Config.getConfigInstance().getBaseUrl());
     }
 
     @AfterMethod

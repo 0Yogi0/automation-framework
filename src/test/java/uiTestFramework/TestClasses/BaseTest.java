@@ -1,8 +1,7 @@
 package uiTestFramework.TestClasses;
 
-import org.apache.logging.log4j.LogManager;
+
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 import uiTestFramework.DriverManager.DriverManager;
@@ -20,21 +19,22 @@ public abstract class BaseTest{
 
     private static final Logger log = LoggerUtil.getLogger(BaseTest.class);
 
-    protected WebDriver driver;
-
     @BeforeSuite
-    public void setupSuite(ITestContext context) {
-        String suiteName = context.getSuite().getName();
-        ExtentManager.createInstance(suiteName);   // Initialize report
+    public void setupSuite() {
+        String suiteName = "automation framework";//context.getSuite().getName();
+        ExtentManager.createInstance(suiteName);// Initialize report
+        System.out.println("in before suite baseTest");
     }
 
     @BeforeMethod
     public void setup(Method method) {
-        ExtentTestManager.startTest(method.getName());
-        DriverManager.setDriver();// Initialize WebDriver
-        driver = DriverManager.getDriver();
-        log.info("Driver initialized successfully for test: {}", method.getName());
-        driver.get(Config.getConfigInstance().getBaseUrl());
+
+        DriverManager.setDriver();
+        // Log specifically using the thread-safe driver
+        LoggerUtil.getLogger(BaseTest.class).info("Driver started for: " + method.getName());
+
+        // Use the getter directly
+        DriverManager.getDriver().get(Config.getConfigInstance().getBaseUrl());
     }
 
     @AfterMethod

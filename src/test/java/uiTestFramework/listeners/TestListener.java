@@ -6,7 +6,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import uiTestFramework.Utilities.ScreenshotUtil;
-import uiTestFramework.extentReportManagers.ExtentManager;
+
 import uiTestFramework.extentReportManagers.ExtentTestManager;
 
 public class TestListener implements ITestListener{
@@ -36,7 +36,10 @@ public class TestListener implements ITestListener{
 
         ExtentTestManager.getTest().log(Status.FAIL,"❌ Test Failed: "+ result.getThrowable());
 
-        ExtentTestManager.getTest().fail("Err: Test Failed at - ",MediaEntityBuilder.createScreenCaptureFromBase64String(screenshotData.getBase64()).build());
+        if (screenshotData.getBase64() != null && !screenshotData.getBase64().isEmpty()){
+            ExtentTestManager.getTest().fail("Err: Test Failed at - ",MediaEntityBuilder.createScreenCaptureFromBase64String(screenshotData.getBase64()).build());
+        }
+
 
     }
 

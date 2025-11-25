@@ -50,10 +50,11 @@ public class Config {
         }
     }
 
-    public static Config getConfigInstance(){
+    public static synchronized Config getConfigInstance(){
         if(instance == null){
             instance = new Config();
         }
+        System.out.println("in get config instance");
         return instance;
     }
 

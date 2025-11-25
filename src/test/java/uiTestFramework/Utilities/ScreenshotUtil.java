@@ -2,6 +2,7 @@ package uiTestFramework.Utilities;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import uiTestFramework.DriverManager.DriverManager;
 
 import java.io.File;
@@ -18,6 +19,13 @@ public class ScreenshotUtil {
     private static final String SCREENSHOT_FOLDER = "screenshots";
 
     public static ScreenshotData takeScreenShot(String testName){
+        WebDriver driver = DriverManager.getDriver();
+
+        if (driver == null) {
+            System.err.println("Driver is null. Cannot take screenshot.");
+            return new ScreenshotData(null, null); // Return empty or handle gracefully
+        }
+
 
         File screenshotFolder = new File(SCREENSHOT_FOLDER);
 

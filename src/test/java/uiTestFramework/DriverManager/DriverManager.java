@@ -1,8 +1,10 @@
 package uiTestFramework.DriverManager;
 
 import org.openqa.selenium.WebDriver;
+import uiTestFramework.config.Config;
 
 import java.lang.module.Configuration;
+import java.time.Duration;
 
 public class DriverManager {
 
@@ -21,6 +23,7 @@ public class DriverManager {
     public static void setDriver(){
         if(driver.get() == null){
             driver.set(DriverFactory.createInstance());
+            driver.get().manage().window().maximize();
         }
     }
 
@@ -29,9 +32,14 @@ public class DriverManager {
     }
 
     public static void quitDriver(){
-        if(driver.get() == null){
-            driver.get().quit();
-            driver.remove();
+        if(driver.get() != null){ // Change == to !=
+            try {
+                driver.get().quit();
+            } catch (Exception e) {
+                System.err.println("Unable to quit driver: " + e.getMessage());
+            } finally {
+                driver.remove(); // Always clean up the ThreadLocal
+            }
         }
     }
 

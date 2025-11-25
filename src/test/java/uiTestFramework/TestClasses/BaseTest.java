@@ -23,7 +23,6 @@ public abstract class BaseTest{
     public void setupSuite() {
         String suiteName = "automation framework";//context.getSuite().getName();
         ExtentManager.createInstance(suiteName);// Initialize report
-        System.out.println("in before suite baseTest");
     }
 
     @BeforeMethod

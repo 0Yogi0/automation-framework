@@ -54,7 +54,6 @@ public class Config {
         if(instance == null){
             instance = new Config();
         }
-        System.out.println("in get config instance");
         return instance;
     }
 
@@ -84,6 +83,11 @@ public class Config {
 
     public int getTimeout() {
         return Integer.parseInt(getPropertyOrDefault("timeout", "20"));
+    }
+
+    public boolean isHeadless() {
+        String headless = getPropertyOrDefault("runHeadless", "false");
+        return Boolean.parseBoolean(headless);
     }
 
 }

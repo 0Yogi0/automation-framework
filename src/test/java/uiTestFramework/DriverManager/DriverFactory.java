@@ -12,12 +12,15 @@ import uiTestFramework.config.Config;
 public class DriverFactory {
 
     public static WebDriver createInstance(){
-        BrowserType browser = Config.getConfigInstance().getBrowser();
+        Config config = Config.getConfigInstance();
+        BrowserType browser = config.getBrowser();
 
         switch (browser){
 
             case CHROME -> {
-                ChromeOptions options = new ChromeOptions();
+
+                ChromeOptions options = getChromeOptions(config);
+
                 return new ChromeDriver(options);
             }
 
@@ -37,6 +40,21 @@ public class DriverFactory {
 
             default -> throw new IllegalArgumentException("Err: Invalid browser "+browser);
         }
+    }
+
+    private static ChromeOptions getChromeOptions(Config config) {
+        ChromeOptions options = new ChromeOptions();
+        //check for headless mode
+        if (config.isHeadless()) {
+            // Use 'new' for modern Chrome headless mode
+            options.addArguments("--headless=new");
+        }
+
+        // Add other useful options (optional but recommended)
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--disable-notifications");
+        options.addArguments("--disable-gpu"); // Sometimes needed for Linux/CI runs
+        return options;
     }
 
 }
